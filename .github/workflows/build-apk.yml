@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: "17"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -35,27 +35,16 @@ jobs:
           sdkmanager "platform-tools"
           sdkmanager "platforms;android-33"
           sdkmanager "build-tools;33.0.2"
-          sdkmanager "cmdline-tools;latest"
 
       - name: Check Android tools
         run: |
           echo $ANDROID_HOME
-          which aidl || true
           find $ANDROID_HOME -name aidl
 
       - name: Install Build dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
-          zip \
-          unzip \
-          autoconf \
-          automake \
-          libtool \
-          pkg-config \
-          libffi-dev \
-          libssl-dev
-
+          sudo apt install -y zip unzip autoconf automake libtool pkg-config libffi-dev libssl-dev
           pip install --upgrade pip
           pip install cython==0.29.36
           pip install buildozer
