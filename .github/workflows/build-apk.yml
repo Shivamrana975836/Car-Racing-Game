@@ -29,24 +29,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK packages
+      - name: Accept Android licenses
         run: |
           yes | sdkmanager --licenses
+
+      - name: Install Android SDK
+        run: |
           sdkmanager "platform-tools"
-          sdkmanager "platforms;android-33"
-          sdkmanager "build-tools;34.0.0"
-
-      - name: Check Android tools
-        run: |
-          echo "Android Home:"
-          echo $ANDROID_HOME
-          echo "Finding aidl:"
-          find $ANDROID_HOME -name aidl
-
-      - name: Fix Android PATH
-        run: |
-          echo "$ANDROID_HOME/build-tools/34.0.0" >> $GITHUB_PATH
-          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
+          sdkmanager "build-tools;37.0.0"
 
       - name: Install Build dependencies
         run: |
@@ -64,6 +56,11 @@ jobs:
           pip install --upgrade pip
           pip install cython==0.29.36
           pip install buildozer
+
+      - name: Check AIDL
+        run: |
+          find $ANDROID_HOME -name aidl
+          ls $ANDROID_HOME/build-tools
 
       - name: Build APK
         run: |
