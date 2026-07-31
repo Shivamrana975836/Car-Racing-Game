@@ -44,7 +44,16 @@ jobs:
       - name: Install Build dependencies
         run: |
           sudo apt update
-          sudo apt install -y zip unzip autoconf automake libtool pkg-config libffi-dev libssl-dev
+          sudo apt install -y \
+            zip \
+            unzip \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            libffi-dev \
+            libssl-dev
+
           pip install --upgrade pip
           pip install cython==0.29.36
           pip install buildozer
