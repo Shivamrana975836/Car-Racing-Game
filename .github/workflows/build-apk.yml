@@ -19,10 +19,18 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android tools
+        run: |
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y openjdk-17-jdk zip unzip
+          sudo apt install -y openjdk-17-jdk zip unzip libffi-dev libssl-dev autoconf automake libtool pkg-config
+          pip install --upgrade pip
           pip install buildozer cython
 
       - name: Build APK
@@ -32,5 +40,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: car-racing-apk
+          name: car-racing-game-apk
           path: bin/*.apk
