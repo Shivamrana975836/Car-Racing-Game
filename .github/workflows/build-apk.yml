@@ -7,6 +7,7 @@ on:
       - main
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
@@ -15,30 +16,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Accept Android licenses
-        run: |
-          yes | sdkmanager --licenses
 
       - name: Install Android SDK
         run: |
+          yes | sdkmanager --licenses
           sdkmanager "platform-tools"
           sdkmanager "platforms;android-35"
           sdkmanager "build-tools;35.0.0"
-          sdkmanager "build-tools;37.0.0"
+
 
       - name: Install Build dependencies
         run: |
@@ -57,14 +59,22 @@ jobs:
           pip install cython==0.29.36
           pip install buildozer
 
+
+      - name: Connect Android SDK to Buildozer
+        run: |
+          mkdir -p ~/.buildozer/android/platform
+          ln -s $ANDROID_HOME ~/.buildozer/android/platform/android-sdk
+
+
       - name: Check AIDL
         run: |
           find $ANDROID_HOME -name aidl
-          ls $ANDROID_HOME/build-tools
+
 
       - name: Build APK
         run: |
           buildozer android debug
+
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
