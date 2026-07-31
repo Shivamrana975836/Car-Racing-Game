@@ -1,37 +1,44 @@
 [app]
 
-# (str) Title of your application
+# Application name
 title = Car Racing Game
 
-# (str) Package name
+# Package name
 package.name = carracinggame
 
-# (str) Package domain
+# Package domain
 package.domain = org.shivam
 
-# (str) Source code directory
+# Source code
 source.dir = .
 
-# (list) Source files to include
+# Include game files and images
 source.include_exts = py,png,jpg,jpeg,webp,txt
 
-# (str) Main entry point
+# Main python file
 source.main = main.py
 
-# (str) Application version
+# Version
 version = 1.0
 
-# (list) Requirements
-requirements = python3,pygame
+# Requirements
+requirements = python3,pygame,sdl2
 
-# (str) Orientation
+# Screen orientation
 orientation = landscape
 
-# (bool) Fullscreen mode
+# Full screen
 fullscreen = 1
+
+
+# Android settings
+android.api = 33
+android.minapi = 21
+android.ndk = 25b
+android.archs = arm64-v8a, armeabi-v7a
 
 
 [buildozer]
 
-# (int) Log level
+# Build logs
 log_level = 2
