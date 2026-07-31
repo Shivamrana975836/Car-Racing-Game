@@ -11,8 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -22,16 +29,36 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android tools
+      - name: Install Android SDK packages
         run: |
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-33"
+          sdkmanager "build-tools;33.0.2"
+          sdkmanager "cmdline-tools;latest"
 
-      - name: Install dependencies
+      - name: Check Android tools
+        run: |
+          echo $ANDROID_HOME
+          which aidl || true
+          find $ANDROID_HOME -name aidl
+
+      - name: Install Build dependencies
         run: |
           sudo apt update
-          sudo apt install -y openjdk-17-jdk zip unzip libffi-dev libssl-dev autoconf automake libtool pkg-config
+          sudo apt install -y \
+          zip \
+          unzip \
+          autoconf \
+          automake \
+          libtool \
+          pkg-config \
+          libffi-dev \
+          libssl-dev
+
           pip install --upgrade pip
-          pip install buildozer cython
+          pip install cython==0.29.36
+          pip install buildozer
 
       - name: Build APK
         run: |
@@ -40,5 +67,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: car-racing-game-apk
+          name: Car-Racing-Game-APK
           path: bin/*.apk
