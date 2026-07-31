@@ -14,19 +14,23 @@ jobs:
       image: kivy/buildozer:latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show versions
+      - name: Show Environment
         run: |
+          whoami
           python3 --version
           buildozer --version
 
       - name: Build APK
+        env:
+          BUILDOZER_WARN_ON_ROOT: 0
         run: |
-          buildozer android debug
+          yes y | buildozer android debug
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Car-Racing-Game-APK
